@@ -8,10 +8,18 @@ const slackToken = process.env.SLACK_BOT_TOKEN!;
 const channelId = process.env.SLACK_CHANNEL_ID!;
 const sheetId = process.env.GOOGLE_SHEET_ID!;
 const sheetRange = process.env.GOOGLE_SHEET_RANGE!;
-const serviceAccountPath = process.env.GOOGLE_SERVICE_ACCOUNT_JSON!;
+const serviceAccountJson = process.env.GOOGLE_SERVICE_ACCOUNT_JSON!;
+
+let credentials: any;
+if (serviceAccountJson.trim().startsWith("{")) {
+  // 환경변수에 JSON 전체가 들어있는 경우
+  credentials = JSON.parse(serviceAccountJson);
+} else {
+  // 파일 경로가 들어있는 경우
+  credentials = JSON.parse(fs.readFileSync(serviceAccountJson, "utf8"));
+}
 
 async function getTodayMenu(): Promise<string> {
-  const credentials = JSON.parse(fs.readFileSync(serviceAccountPath, "utf8"));
   const auth = new google.auth.GoogleAuth({
     credentials,
     scopes: ["https://www.googleapis.com/auth/spreadsheets.readonly"],
