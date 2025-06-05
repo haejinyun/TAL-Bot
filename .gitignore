@@ -1,0 +1,4 @@
+node_modules/
+.env
+tal-lunch-bot.json
+package-lock.json 

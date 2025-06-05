@@ -1,0 +1,24 @@
+name: Lunch Bot
+
+on:
+  schedule:
+    - cron: "0 5 * * 1-5" # KST 14:00 = UTC 05:00
+    # - cron: "30 2 * * 1-5" # KST 11:30 = UTC 02:30
+  workflow_dispatch:
+
+jobs:
+  send-lunch-menu:
+    runs-on: ubuntu-latest
+    env:
+      SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID }}
+      GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+      GOOGLE_SHEET_ID: ${{ secrets.GOOGLE_SHEET_ID }}
+      GOOGLE_SHEET_RANGE: ${{ secrets.GOOGLE_SHEET_RANGE }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+      - run: npm ci
+      - run: npx ts-node src/index.ts

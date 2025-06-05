@@ -1,0 +1,21 @@
+{
+  "name": "lunch-bot",
+  "version": "1.0.0",
+  "description": "Slack bot that sends daily lunch menu from Google Sheets.",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "ts-node src/index.ts"
+  },
+  "dependencies": {
+    "@slack/bolt": "^4.4.0",
+    "@slack/web-api": "^7.0.0",
+    "dotenv": "^16.0.0",
+    "googleapis": "^133.0.0"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^9.0.0",
+    "@types/node": "^20.0.0",
+    "ts-node": "^10.0.0",
+    "typescript": "^5.0.0"
+  }
+}
