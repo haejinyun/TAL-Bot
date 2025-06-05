@@ -2,22 +2,15 @@ import dotenv from "dotenv";
 dotenv.config();
 import { WebClient } from "@slack/web-api";
 import { google } from "googleapis";
-import fs from "fs";
 
 const slackToken = process.env.SLACK_BOT_TOKEN!;
 const channelId = process.env.SLACK_CHANNEL_ID!;
 const sheetId = process.env.GOOGLE_SHEET_ID!;
 const sheetRange = process.env.GOOGLE_SHEET_RANGE!;
-const serviceAccountJson = process.env.GOOGLE_SERVICE_ACCOUNT_JSON!;
 
-let credentials: any;
-if (serviceAccountJson.trim().startsWith("{")) {
-  // 환경변수에 JSON 전체가 들어있는 경우
-  credentials = JSON.parse(serviceAccountJson);
-} else {
-  // 파일 경로가 들어있는 경우
-  credentials = JSON.parse(fs.readFileSync(serviceAccountJson, "utf8"));
-}
+// 환경변수에 JSON 전체가 들어있다고 가정
+const serviceAccountJson = process.env.GOOGLE_SERVICE_ACCOUNT_JSON!;
+const credentials = JSON.parse(serviceAccountJson);
 
 async function getTodayMenu(): Promise<string> {
   const auth = new google.auth.GoogleAuth({
